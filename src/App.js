@@ -1,40 +1,31 @@
+import {useEffect} from 'react'
+import {useDispatch} from 'react-redux'
+import { onAuthStateChangedListener, createUserDocumentFromAuth, getCurrentUser } from './utils/firebase/firebase.utils'
+import { Routes, Route } from "react-router-dom";
+import { checkUserSession } from './store/user/user.action';
+import Home from "./routes/home/home.component";
+import Navigation from "./routes/navigation/navigation.component";
+import Authentication from "./routes/authentication/authentication.component";
+import Shop from "./routes/shop/shop.component";
+import CheckOut from "./routes/checkout/checkout.component";
+
 const App = () => {
-  const categories = [
-    {
-      id: 1,
-      title: 'Hats',
-    },
-    {
-      id: 2,
-      title: 'Jackets',
-    },
-    {
-      id: 3,
-      title: 'Sneakers',
-    },
-    {
-      id: 4,
-      title: 'Womens',
-    },
-    {
-      id: 5,
-      title: 'Mens',
-    },
-  ];
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(checkUserSession())
+  }, [])
 
   return (
-    <div className='categories-container'>
-      {categories.map(({ title }) => (
-        <div className='category-container'>
-          <div className='background-image' />
-          <div className='category-body-container'>
-            <h2>{title}</h2>
-            <p>Shop Now</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+    <Routes>
+      <Route path='/' element={<Navigation/>}>
+        <Route index element={<Home/>}/>
+        <Route path='shop/*' element={<Shop/>}/>
+        <Route path='auth' element={<Authentication/>}/>
+        <Route path='checkout' element={<CheckOut/>}/>
+      </Route>
+    </Routes>
+  )
 };
 
 export default App;
