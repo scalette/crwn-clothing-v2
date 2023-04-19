@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, FormEvent, ChangeEvent } from 'react'
 import FormInput from '../form-input/form-input.component'
 import "./sign-in-form.style.scss"
 import { auth } from '../../utils/firebase/firebase.utils'
@@ -20,7 +20,7 @@ const SignInForm = () => {
     setFormFields(defaultFormFields)
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLFormElement>) => {
     const {name, value} = event.target
     setFormFields({
       ...formFields,
@@ -31,7 +31,7 @@ const SignInForm = () => {
   const signInWithGoogle = async () => {
     dispatch(googlSignInStart())
   }
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!password){
       alert('Provide password')
@@ -41,7 +41,7 @@ const SignInForm = () => {
       dispatch(emailSignInStart(email, password))
       resetFormField()
     } catch(error) {
-      switch(error.code) {
+      switch(error) {
         case 'auth/user-not-found':
           alert('User not found')
           break
@@ -61,23 +61,21 @@ const SignInForm = () => {
     <form onSubmit={handleSubmit}>
       <FormInput 
         label="Email"
-        inputOptions = {{
-          type: "email",
-          required: true,
-          onChange: handleChange,
-          name: 'email',
-          value: email,
-        }}
+        type = "email"
+        required
+        //@ts-ignore
+        onChange = {handleChange}
+        name = 'email'
+        value = {email}
       />
       <FormInput 
         label="Password"
-        inputOptions = {{
-          type: "password",
-          required: true,
-          onChange: handleChange,
-          name: 'password',
-          value: password,
-        }}
+        type= "password"
+        required
+        //@ts-ignore
+        onChange= {handleChange}
+        name= 'password'
+        value= {password}
       />
       <div className='buttons-container'>
         <Button type="submit">Sign In</Button>

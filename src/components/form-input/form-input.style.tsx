@@ -3,12 +3,16 @@ import styled, { css } from 'styled-components'
 const subColor = 'grey'
 const mainColor = 'black'
 
+type FormInputLabelProps = {
+  shrink?: boolean,
+}
+
 const shtinkLabelStyles = css`
   top: -14px;
   font-size: 12px;
   color: ${mainColor};
 `
-export const ForimInputLabel = styled.label`
+export const ForimInputLabel = styled.label<FormInputLabelProps>`
   color: ${subColor};
   font-size: 16px;
   font-weight: normal;

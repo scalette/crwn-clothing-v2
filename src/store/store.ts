@@ -1,6 +1,6 @@
-import { compose, applyMiddleware, createStore } from 'redux'
 import logger from 'redux-logger'
-import { persistStore, persistReducer} from 'redux-persist'
+import { compose, applyMiddleware, createStore, Middleware } from 'redux'
+import { persistStore, persistReducer, PersistConfig} from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
 import createSagaMiddleware from 'redux-saga'
@@ -11,13 +11,18 @@ import { rootSaga } from './root-saga'
 
 const sagaMiddleware = createSagaMiddleware()
 
+export type RootState = ReturnType<typeof rootReducer>
 
-const loggerMiddleware = (store) => (next) => (action) => {
+const loggerMiddleware: Middleware<{}, RootState> = (store) => (next) => (action) => {
   if(!action.type) {
-    return next()
+    return next(action)
   }
   next(action)
 }
+
+// type ExtendedPersistConfig = PersistConfig<RootState> & {
+//   whiteList: (keysof RootState)[]
+// }
 
 const persistConfid = {
   key: 'root',

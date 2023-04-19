@@ -11,7 +11,7 @@ const ProductCard = ({product}) => {
   const cartItems = useSelector(selectCartItems)
 
   const addProductToCart = () => dispatch(addItemToCart(cartItems, product))
-
+  console.log('RENDER ProductCard')
   return (<div className='product-card-container'>
     <img src={imageUrl} alt={`${name}`}/>
     <div className='footer'>
